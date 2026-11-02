@@ -1,16 +1,12 @@
-﻿fn main() {
-    println!("=======================================================");
-    println!("[WEB4] [Merqle Run] (\ticker)");
-    println!("[ROLE] Autonomous Production-Grade Protocol Engine");
-    println!("[RPC] QuickNode Multi-Chain RPC Gateway: CONNECTED");
-    println!("[PQC] NIST FIPS 203 (ML-KEM) & FIPS 204 (ML-DSA) Security Vault: ACTIVE");
-    println!("=======================================================");
-    
-    let mut state: u64 = 0x55AA55AA55AA55AA;
-    for _ in 0..10_000 {
-        state = (state ^ ((state >> 7) | (state << 57)) ^ 0x9E3779B97F4A7C15) & 0xFFFFFFFFFFFFFFFF;
+mod engine;
+
+use engine::BitMixerEngine;
+
+fn main() {
+    let engine = BitMixerEngine::new(0x55AA55AA55AA55AA);
+    for _ in 0..10 {
+        engine.step();
     }
-    assert!(state != 0, "Invariant Automaton State Collapsed");
-    println!("[PASS] 10,000 Production Invariant Cycles Executed: 0x{:016X}", state);
-    println!("[SUCCESS] All Invariants & Treasury Escrows Verified (100/100)");
+    println!("Local deterministic bit-mixing demonstration: {:016X}", engine.state());
+    println!("No RPC, PQC, Conway Game of Life, settlement, or deployment verification performed.");
 }
